@@ -1,0 +1,31 @@
+<html>
+  <head>
+  <link rel='stylesheet' type="text/css" href="/css/login.css">
+  </head>
+  <body>
+
+    <div id='center'>
+    <h1 id='name'></h1>
+    <button id='turd'>Login</button><br>
+    <button id='newName'>New Name</button>
+    </div>
+    <script>
+      document.getElementById('turd').addEventListener('click', function() {
+        window.location = "index.html";
+      })
+
+      var adjs = `Aggressive,Agreeable,Ambitious,Brave,Calm,Delightful,Eager,Faithful,Gentle,Happy,Jolly,Kind,Lively,Nice,Obedient,Polite,Proud,Silly,Thankful,Victorious,Witty,Wonderful,Zealous`;
+      adjs = adjs.split(',');
+      var nouns = `Dog,Puppy,Turtle,Rabbit,Parrot,Cat,Kitten,Goldfish,Mouse,Tropical fish,Hamster`;
+      nouns = nouns.split(',');
+      document.getElementById('name').textContent = localStorage.getItem('nameForRound') || adjs[Math.floor(Math.random() * adjs.length)] + ' ' + nouns[Math.floor(Math.random() * nouns.length)];
+      localStorage.setItem('nameForRound', document.getElementById('name').textContent);
+
+      document.getElementById('newName').addEventListener('click', function() {
+        document.getElementById('name').textContent = adjs[Math.floor(Math.random() * adjs.length)] + ' ' + nouns[Math.floor(Math.random() * nouns.length)];
+        localStorage.setItem('nameForRound', document.getElementById('name').textContent);  
+      });
+      
+    </script>
+  </body>
+</html>

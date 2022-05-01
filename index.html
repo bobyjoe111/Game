@@ -1,0 +1,84 @@
+<html>
+  <head></head>
+  <body>
+    <canvas id='ctx' width="300" height="300" style="border: solid 1px black;"></canvas>
+    <script src="/socket.io/socket.io.js">    </script>
+    <script>
+      var ctx = document.getElementById('ctx').getContext('2d');
+      ctx.font = "20px Arial";
+      var id = undefined;
+      var socket = io();
+      var name = localStorage.getItem('nameForRound') || "Happy Coder";
+
+      socket.on('socketId', function(i) {id = i;});
+      socket.emit('name', name);
+
+      var self;
+      
+      socket.on('characters', function(pack, dots) {
+        ctx.clearRect(0, 0, 300, 300);
+        ctx.save();
+        var index;
+        for (var i = 0; i < pack.length; i++) {
+          if (pack[i].id === id) {index = i; self = pack[i];}
+        }
+
+        ctx.translate(150, 150);
+        console.log(self);
+        ctx.scale(25/self.r, 25/self.r);
+
+        for (var i = 0; i < dots.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = dots[i].c;
+          ctx.ellipse(dots[i].x - self.x, dots[i].y - self.y, 5, 5, Math.PI / 4, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        }
+        
+        for (var i = 0; i < pack.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = pack[i].color;
+          ctx.ellipse(pack[i].x - self.x, pack[i].y - self.y, pack[i].r, pack[i].r, Math.PI / 4, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        }
+        
+        ctx.restore();
+        ctx.fillStyle = 'black';
+        ctx.fillText(self.name, 0, 295);
+        ctx.fill();
+      });
+
+      socket.on('die', function(name) {localStorage.setItem('killerForRound', name);window.location = "lost.html"})
+      
+      document.onkeydown = function(e) {
+        if (e.keyCode === 68) {
+          socket.emit('keys', {key: "right", bool: true});
+        } else if (e.keyCode === 83) {
+          socket.emit('keys', {key: "down", bool: true});
+        } else if (e.keyCode === 65) {
+          socket.emit('keys', {key: "left", bool: true});
+        } else if (e.keyCode === 87) {
+          socket.emit('keys', {key: "up", bool: true});
+        } else if (e.keyCode === 69) {
+          socket.emit('keys', {key: "space", bool: true});
+        }
+      };
+
+      document.onkeyup = function(e) {
+        if (e.keyCode === 68) {
+          socket.emit('keys', {key: "right", bool: false});
+        } else if (e.keyCode === 83) {
+          socket.emit('keys', {key: "down", bool: false});
+        } else if (e.keyCode === 65) {
+          socket.emit('keys', {key: "left", bool: false});
+        } else if (e.keyCode === 87) {
+          socket.emit('keys', {key: "up", bool: false});
+        } else if (e.keyCode === 69) {
+          socket.emit('keys', {key: "space", bool: false});
+        }
+      };
+      
+    </script>
+  </body>
+</html>

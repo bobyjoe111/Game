@@ -1,0 +1,9 @@
+<html>
+  <head></head>
+  <body>
+    <p>You got killed by: <div id='name'></div></p>
+    <script>
+    document.getElementById('name').textContent = localStorage.getItem('killerForRound') || "Evil Hacker";
+    </script>
+  </body>
+</html>
