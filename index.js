@@ -142,7 +142,7 @@ io.on('connection', (socket) => {
 
 	
 	socket.on('killMe', function() {
-		delete SOCKER_LIST[socket.id];
+		delete SOCKET_LIST[socket.id];
 		WATCHER_LIST[socket.id] = socket;
 	});
 
@@ -189,6 +189,10 @@ setInterval(function() {
   }
 
   for (var i in SOCKET_LIST) {
+    io.emit('characters', pack, dots);
+  }
+
+	for (var i in WATCHER_LIST) {
     io.emit('characters', pack, dots);
   }
 }, 1000/25);

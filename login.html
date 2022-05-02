@@ -46,6 +46,34 @@
       });
 
       var ctx = document.getElementById('ctx').getContext('2d');
+
+			socket.on('characters', function(pack, dots) {
+        ctx.clearRect(0, 0, 300, 300);
+        ctx.save();
+        ctx.translate(document.getElementById('ctx').width/2, document.getElementById('ctx').height/2);
+        ctx.scale(25/(pack[0].r || 25), 25/(pack[0].r || 25));
+
+        for (var i = 0; i < dots.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = dots[i].c;
+          ctx.ellipse(dots[i].x - (pack[0].x || 0), dots[i].y - (pack[0].y || 0), 5, 5, Math.PI / 4, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        }
+        
+        for (var i = 0; i < pack.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = pack[i].color;
+          ctx.ellipse(pack[i].x - (pack[0].x || 0), pack[i].y - (pack[0].y || 0), pack[i].r, pack[i].r, Math.PI / 4, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        }
+        
+        ctx.restore();
+        ctx.fillStyle = 'black';
+        ctx.fillText(self.name, 0, 295);
+        ctx.fill();
+      });
       
       
     </script>
