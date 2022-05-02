@@ -46,6 +46,10 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/login.html')
 });
 
+app.get('/homescreen', function(req, res) {
+  
+});
+
 app.get('/index.html', function(req, res) {
   res.sendFile(__dirname + '/index.html')
 });

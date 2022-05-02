@@ -1,19 +1,82 @@
-#center {
+@keyframes swapCornersLeft {
+  from {border-radius: 10px 0px;}
+  to {border-radius: 0px 10px;}
+}
+            
+@keyframes swapCornersRight {
+  from {border-radius: 0px 10px;}
+  to {border-radius: 10px 0px;}
+}
+
+#ctx {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  font-family: Courier New;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: 2px solid green;
+  border-radius: 10px 0px 10px 0px;
+  animation-name: swapCornersRight;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+button:hover {
+  animation-name: swapCornersLeft;
+}
+
+#left {
+  z-index: 1;
+  top: 0px;
   position: absolute;
+  left: 1%;
+  width: calc(1/3 * 100% - 1.5%);
+  height: calc(100% - 20px);
+  border: 2px solid black;
+  overflow-y:hidden;
+  font-family: Courier New;
+}
+
+#left-container {
+  margin-top: calc(0.5*(100% - 20px));
+  text-align: center;
+}
+
+#right {
+  z-index: 1;
+  top: 0px;
+  position: absolute;
+  left: calc(2/3 * 100% + 0.5%);
+  width: calc(1/3 * 100% - 1.5%);
+  height: calc(100% - 20px);
+  border: 2px solid black;
+  overflow-y:hidden;
+  font-family: Courier New;
+}
+
+#right-container {
+  margin-top: calc(0.5*(100% - 20px));
+  text-align: center;
+}
+
+#center {
+  z-index: 1;
+  position: absolute;
+  top: 0px;
   left: calc(1/3 * 100%);
   width: calc(1/3 * 100%);
   height: calc(100% - 20px);
   border: 2px solid black;
+  overflow-y:hidden;
+  font-family: Courier New;
 }
 
-#name {
-  vertical-align: middle;
+#container {
+  margin-top: calc(0.5*(100% - 20px));
+  text-align: center;
 }
 
-#turd {
-  vertical-align: middle;
-}
-
-#newName {
-  vertical-align: middle;
-}

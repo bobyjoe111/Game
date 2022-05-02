@@ -3,11 +3,27 @@
   <link rel='stylesheet' type="text/css" href="/css/login.css">
   </head>
   <body>
-
+    <canvas id='ctx'></canvas>
+    <div id='left'>
+      <div id='left-container'>
+        <h2>How to play:</h2>
+        <p>Use WASD keys to move</p>
+        <p>Press E To Boost</p>
+      </div>  
+    </div>
     <div id='center'>
-    <h1 id='name'></h1>
-    <button id='turd'>Login</button><br>
-    <button id='newName'>New Name</button>
+      <div id='container'>
+        <h1 id='name'></h1>
+        <button id='turd'>Play</button>
+        <button id='newName'>New Name</button>
+      </div>
+    </div>
+    <div id='right'>
+      <div id='right-container'>
+        <h2>Rules:</h2>
+        <p>Touch smaller blobs pop them</p>
+        <p>Pop blobs to upgrade how large you can grow</p>
+      </div>  
     </div>
     <script>
       document.getElementById('turd').addEventListener('click', function() {
@@ -25,6 +41,9 @@
         document.getElementById('name').textContent = adjs[Math.floor(Math.random() * adjs.length)] + ' ' + nouns[Math.floor(Math.random() * nouns.length)];
         localStorage.setItem('nameForRound', document.getElementById('name').textContent);  
       });
+
+      var ctx = document.getElementById('ctx').getContext('2d');
+      
       
     </script>
   </body>
