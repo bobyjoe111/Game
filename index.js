@@ -63,6 +63,7 @@ app.get('/lost.html', function(req, res) {
 // });
 
 var SOCKET_LIST = {};
+var WATCHER_LIST = {};
 
 var randomPos = function() {
     var x = Math.random() * (450 + 300) + -300;
@@ -138,6 +139,12 @@ io.on('connection', (socket) => {
 
   
   SOCKET_LIST[socket.id] = socket;
+
+	
+	socket.on('killMe', function() {
+		delete SOCKER_LIST[socket.id];
+		WATCHER_LIST[socket.id] = socket;
+	});
 
   socket.on("disconnect", function() {
     delete SOCKET_LIST[socket.id];

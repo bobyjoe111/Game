@@ -25,7 +25,10 @@
         <p>Pop blobs to upgrade how large you can grow</p>
       </div>  
     </div>
+		<script src="/socket.io/socket.io.js"></script>
     <script>
+			var socket = io();
+			socket.emit('killMe');
       document.getElementById('turd').addEventListener('click', function() {
         window.location = "index.html";
       })
