@@ -1,9 +1,56 @@
 <html>
-  <head></head>
+  <head>
+		<link rel='stylesheet' type="text/css" href="/css/lost.css">
+	</head>
   <body>
-    <p>You got killed by: <div id='name'></div></p>
+		<canvas id='ctx'></canvas>
+		<div id='center'>
+      <div id='container'>
+				<h1>ROUND.IO</h1>
+        <h3 id='name'>You got killed by: <div id='killername'></div></h3>
+				<button id='backToHome'>Play Again</button>
+      </div>
+    </div>
+		<script src="/socket.io/socket.io.js"></script>
     <script>
-    document.getElementById('name').textContent = localStorage.getItem('killerForRound') || "Evil Hacker";
+    document.getElementById('killername').textContent = localStorage.getItem('killerForRound') || "Evil Hacker";
+			var socket = io();
+			socket.emit('killMe');
+
+			var ctx = document.getElementById('ctx').getContext('2d');
+
+			socket.on('characters', function(pack, dots) {
+        ctx.clearRect(0, 0, document.getElementById('ctx').width, document.getElementById('ctx').height);
+        ctx.save();
+       	pack[0] = pack[0] || {x: 0, x: 0, r: 25}; ctx.translate(document.getElementById('ctx').width/2, document.getElementById('ctx').height/2);
+        ctx.scale(25/pack[0].r/4, 25/pack[0].r/4);
+
+        for (var i = 0; i < dots.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = dots[i].c;
+          ctx.ellipse(dots[i].x - (pack[0].x || 0), dots[i].y - (pack[0].y || 0), 5, 5, Math.PI / 4, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        }
+        
+        for (var i = 0; i < pack.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = pack[i].color;
+          ctx.ellipse(pack[i].x - (pack[0].x || 0), pack[i].y - (pack[0].y || 0), pack[i].r, pack[i].r, Math.PI / 4, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        }
+        
+        ctx.restore();
+        ctx.fillStyle = 'black';
+        ctx.fillText(self.name, 0, 295);
+        ctx.fill();
+      });
     </script>
+		<script>
+			document.getElementById('backToHome').addEventListener('click', function() {
+				window.location = 'login.html';
+			})
+		</script>
   </body>
 </html>

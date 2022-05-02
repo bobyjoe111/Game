@@ -1,4 +1,4 @@
-const colors = ["green", "blue", "red", "black", "orange", "yellow", "pink", "purple", "teal", "gray"];
+const colors = ["green", "blue", "red", "orange", "yellow", "pink", "purple", "teal", "gray"];
 
 var width = 1000;
 var height = 1000;
@@ -92,6 +92,7 @@ io.on('connection', (socket) => {
   socket["down"] = false;
   socket['space'] = false;
   socket.kills = 0;
+	socket.killsLeft = 1;
   socket.dead = false;
   socket.upDate = function() {
     if (this["left"] && this.x > -width) {
@@ -112,12 +113,11 @@ io.on('connection', (socket) => {
     } else {
       this.speed = 1;
     }
-
-    
   };
   socket.checkDots = function() {
     var killIndex = getIndex(this.kills, kills);
     var size = sizes[killIndex];
+		if (kills[killIndex + 1]) {this.killsLeft = kills[killIndex+1] - this.kills;}
     for (var i = dots.length - 1; i > -1; i--) {
       if (dist(this.x, this.y, dots[i].x, dots[i].y) < (this.radius + 5) && this.radius < size) {
         dots.splice(i, 1);
@@ -136,11 +136,9 @@ io.on('connection', (socket) => {
   socket.on('keys', function(data) {
     socket[data.key] = data.bool;
   });
-
-  
+	
   SOCKET_LIST[socket.id] = socket;
 
-	
 	socket.on('killMe', function() {
 		delete SOCKET_LIST[socket.id];
 		WATCHER_LIST[socket.id] = socket;
@@ -148,6 +146,7 @@ io.on('connection', (socket) => {
 
   socket.on("disconnect", function() {
     delete SOCKET_LIST[socket.id];
+		delete WATCHER_LIST[socket.id]
   });
   
 });
@@ -164,7 +163,8 @@ setInterval(function() {
       y: socket.y,
       r: socket.radius,
       color: socket.color,
-      name: socket.name
+      name: socket.name,
+			killsLeft: socket.killsLeft
     });
   }
 

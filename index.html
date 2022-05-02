@@ -1,11 +1,13 @@
 <html>
-  <head></head>
+  <head>
+		<link rel='stylesheet' type="text/css" href="/css/index.css">
+	</head>
   <body>
-    <canvas id='ctx' width="300" height="300" style="border: solid 1px black;"></canvas>
+    <canvas id='ctx' style="border: solid 1px black;"></canvas>
     <script src="/socket.io/socket.io.js">    </script>
     <script>
       var ctx = document.getElementById('ctx').getContext('2d');
-      ctx.font = "20px Courier New";
+      ctx.font = "10px Courier New";
       var id = undefined;
       var socket = io();
       var name = localStorage.getItem('nameForRound') || "Happy Coder";
@@ -16,16 +18,16 @@
       var self;
       
       socket.on('characters', function(pack, dots) {
-        ctx.clearRect(0, 0, 300, 300);
+        ctx.clearRect(0, 0, document.getElementById('ctx').width, document.getElementById('ctx').height);
         ctx.save();
         var index;
         for (var i = 0; i < pack.length; i++) {
           if (pack[i].id === id) {index = i; self = pack[i];}
         }
 
-        ctx.translate(150, 150);
+        ctx.translate(document.getElementById('ctx').width/2, document.getElementById('ctx').height/2);
         console.log(self);
-        ctx.scale(25/self.r, 25/self.r);
+        ctx.scale((25/self.r)/2, (25/self.r)/2);
 
         for (var i = 0; i < dots.length; i++) {
           ctx.beginPath();
@@ -45,7 +47,7 @@
         
         ctx.restore();
         ctx.fillStyle = 'black';
-        ctx.fillText(self.name, 0, 295);
+        ctx.fillText(self.name + " - Pops till size upgrade: " + self.killsLeft, 0, document.getElementById('ctx').height-5);
         ctx.fill();
       });
 
